@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEX AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #fff;
+      text-transform: uppercase;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at bottom, #3b1c5c 0%, #090a0f 100%);
+      background-size: cover;
+      z-index: -3;
+      animation: backgroundFade 20s infinite alternate;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/stardust.png');
+      z-index: -2;
+      animation: starsMove 60s linear infinite;
+      opacity: 0.3;
+    }
+
+    .coin {
+      position: fixed;
+      font-size: 2rem;
+      z-index: -1;
+      animation: floatCoin 30s linear infinite;
+      opacity: 0.8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    @keyframes floatCoin {
+      0% {
+        transform: translate(0, 0);
+      }
+      100% {
+        transform: translate(var(--dx), var(--dy));
+      }
+    }
+
+    @keyframes starsMove {
+      from { background-position: 0 0; }
+      to { background-position: 1000px 1000px; }
+    }
+
+    @keyframes backgroundFade {
+      0% { filter: brightness(1); }
+      100% { filter: brightness(1.1); }
+    }
+
+    @keyframes glow {
+      0% { box-shadow: 0 0 4px gold, 0 0 6px gold; }
+      50% { box-shadow: 0 0 12px gold, 0 0 20px gold; }
+      100% { box-shadow: 0 0 4px gold, 0 0 6px gold; }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animated-gradient {
+      background-size: 300% 300%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    header {
+      text-align: center;
+      padding: 0.5rem 0.5rem;
+      background-color: transparent;
+    }
+    header h1 {
+      font-size: 8rem;
+      color: transparent;
+      font-weight: bold;
+      -webkit-text-stroke: 2px gold;
+      text-shadow: 0 0 6px gold, 0 0 12px gold;
+    }
+
+    .section {
+      max-width: 1000px;
+      margin: 4rem auto;
+      padding: 2rem;
+      border-radius: 1rem;
+      background: rgba(0, 0, 0, 0.85);
+      text-align: center;
+      border: 2px solid gold;
+      animation: glow 3s ease-in-out infinite;
+      color: white;
+    }
+
+    .section h2, .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: gold;
+    }
+
+    .faq-item {
+      border: 1px solid gold;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: rgba(255,255,255,0.08);
+      cursor: pointer;
+    }
+
+    .faq-item h3 {
+      font-size: 1.25rem;
+      color: gold;
+      margin: 0;
+    }
+
+    .faq-answer {
+      display: none;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #ddd;
+      line-height: 1.4;
+    }
+
+    .buy-section button {
+      background: linear-gradient(to right, #ffd700, #ffae00);
+      color: black;
+      border: 2px solid gold;
+      border-radius: 10px;
+      padding: 1.2rem 2.5rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: glow 2s infinite;
+      margin-top: 2rem;
+    }
+
+    .buy-section button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px gold;
+    }
+
+    #stage {
+      margin-bottom: 0.5rem;
+    }
+
+    .info-box {
+      background-color: rgba(0, 0, 0, 0.85);
+      border: 1px solid gold;
+      border-radius: 8px;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-align: center;
+      color: white;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      max-width: 350px;
+      width: 100%;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem 0;
+      color: gold;
+      font-size: 2rem;
+    }
+
+    .footer a {
+      color: gold;
+      text-decoration: none;
+    }
+      @media (max-width: 768px) {
+      header h1 {
+        font-size: 3rem;
+        -webkit-text-stroke: 1px gold;
+      }
+      .section {
+        margin: 1rem;
+        padding: 1rem;
+      }
+      .section h2, .section-title {
+        font-size: 1.5rem;
+      }
+      .info-box {
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
+      }
+      .buy-section button {
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+      }
+      .faq-item h3 {
+        font-size: 1rem;
+      }
+      .whitepaper .section-title {
+        font-size: 1.5rem;
+      }
+      .whitepaper div[style*='min-width: 250px'] {
+        min-width: 200px !important;
+        max-width: 200px !important;
+        font-size: 0.65rem !important;
+      }
+      .tokenomics .animated-gradient {
+        font-size: 0.6rem;
+      }
+    }
+  </style>
+<style>
+    .info-box:hover, .faq-item:hover {
+      transform: scale(1.03);
+      transition: transform 0.3s ease;
+    }
+    .section.whitepaper p {
+      line-height: 1.6;
+      font-size: 0.85rem;
+    }
+  </style>
+<body>
+<header>
+  <h1>DEX AI</h1>
+</header>
+<script>  
+    const symbols = ['💵', '🪐', '🚀', '🌌', '✨'];
+  for (let i = 0; i < 30; i++) {
+    const emoji = document.createElement('div');
+    emoji.classList.add('coin');
+    const side = Math.floor(Math.random() * 4);
+    let x, y, dx, dy;
+    switch (side) {
+      case 0: x = Math.random() * window.innerWidth; y = -50; dx = (Math.random() - 0.5) * window.innerWidth * 0.5; dy = window.innerHeight + 100; break;
+      case 1: x = Math.random() * window.innerWidth; y = window.innerHeight + 50; dx = (Math.random() - 0.5) * window.innerWidth * 0.5; dy = -window.innerHeight - 100; break;
+      case 2: x = -50; y = Math.random() * window.innerHeight; dx = window.innerWidth + 100; dy = (Math.random() - 0.5) * window.innerHeight * 0.5; break;
+      case 3: x = window.innerWidth + 50; y = Math.random() * window.innerHeight; dx = -window.innerWidth - 100; dy = (Math.random() - 0.5) * window.innerHeight * 0.5; break;
+    }
+    emoji.style.left = `${x}px`;
+    emoji.style.top = `${y}px`;
+    emoji.style.setProperty('--dx', dx + 'px');
+    emoji.style.setProperty('--dy', dy + 'px');
+    emoji.style.animationDuration = (10 + Math.random() * 40) + 's';
+    emoji.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    document.body.appendChild(emoji);
+  }
+</script>
+<section class="section presale">
+    <div class="section-title" style="font-size: 2.5rem; text-align: center; letter-spacing: 1px;">🚀 PRESALE</div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+      <div class="info-box" id="price">TOKEN PRICE: $0.000100</div>
+      <div class="info-box" id="stage">CURRENT STAGE: 1 / 11</div>
+      <div style="height: 0.5rem;"></div>
+      <div class="info-box" id="funds">FUNDS RAISED: $0</div>
+      <div style="width: 100%; max-width: 400px; height: 20px; background: #222; border-radius: 10px; overflow: hidden; border: 1px solid gold;">
+        <div id="funds-bar" style="height: 100%; width: 0%; background: linear-gradient(to right, gold, orange);"></div>
+      </div>
+      <div class="buy-section" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem;">
+        <button id="connect-button" style="font-size: 1.2rem; padding: 1.2rem 2rem; height: 60px;">🔗 CONNECT WALLET</button>
+  <input id="bnb-amount" type="text" placeholder="Amount in BNB" style="background: linear-gradient(to right, #ffd700, #ffae00); color: black; border: 2px solid gold; border-radius: 10px; padding: 1rem 1.2rem; font-size: 1rem; height: 40px; text-align: center; font-weight: bold;">
+  <button id="buy-button" style="font-size: 1.2rem; padding: 1.2rem 2rem; height: 60px;" disabled>💰 BUY TOKEN</button>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("connect-button").onclick = async () => {
+      await init();
+      document.getElementById("buy-button").disabled = false;
+      document.getElementById("connect-button").disabled = true;
+    };
+    document.getElementById("buy-button").onclick = async () => {
+      await buyTokens();
+    };
+  });
+</script>
+
+    </div>
+  </section>
+  <section class="section tokenomics">
+    <div class="section-title" style="font-size: 2.5rem; text-align: center; letter-spacing: 1px; margin-bottom: 4rem;">📊 TOKENOMICS</div>
+    <div style="width: 100%; display: flex; justify-content: center;">
+      <div style="width: 100%; max-width: 600px; height: 30px; display: flex; overflow: hidden; border-radius: 20px; border: 1px solid gold; margin-bottom: 2rem;">
+        <div class="animated-gradient" style="flex: 20; background: linear-gradient(270deg, #FFD700, #FFB700, #FFD700); text-align: center; font-weight: bold; color: #000; line-height: 30px; font-size: 0.7rem;">20B PRESALE</div>
+        <div class="animated-gradient" style="flex: 38; background: linear-gradient(270deg, #8000FF, #C080FF, #8000FF); text-align: center; font-weight: bold; color: #fff; line-height: 30px; font-size: 0.7rem;">38B POST-PRESALE</div>
+        <div class="animated-gradient" style="flex: 2; background: linear-gradient(270deg, #0055FF, #00BBFF, #0055FF); text-align: center; font-weight: bold; color: #000; line-height: 30px; font-size: 0.7rem;">2B TEAM</div>
+      </div>
+    </div>
+  </section>
+<section class="section roadmap" style="width: fit-content; max-width: 90vw; margin: 2rem auto; padding: 2rem;">
+  <div class="section-title" style="font-size: 2.5rem; text-align: center; letter-spacing: 1px; margin-bottom: 4rem;">🗺️ ROADMAP</div>
+  <div style="position: relative; max-width: 800px; margin: 0 auto;">
+    <div style="position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: gold; transform: translateX(-50%);"></div>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      <li style="position: relative; margin-bottom: 60px;">
+        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background: gold; border-radius: 50%; z-index: 1;"></div>
+        <div style="padding: 0 20px; text-align: left; max-width: 300px; margin-left: calc(50% + 30px);">✅ Q2 2025: TOKEN CREATION & SMART CONTRACT DEPLOYMENT</div>
+      </li>
+      <li style="position: relative; margin-bottom: 60px;">
+        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background: gold; border-radius: 50%; z-index: 1;"></div>
+        <div style="padding: 0 20px; text-align: right; max-width: 300px; margin-right: calc(50% + 30px); float: right;">🌐 Q3 2025: WEBSITE & WHITEPAPER RELEASE</div>
+      </li>
+      <li style="position: relative; margin-bottom: 60px; clear: both;">
+        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background: gold; border-radius: 50%; z-index: 1;"></div>
+        <div style="padding: 0 20px; text-align: left; max-width: 300px; margin-left: calc(50% + 30px);">🚀 Q3 2025: PRESALE LAUNCH</div>
+      </li>
+      <li style="position: relative; margin-bottom: 60px;">
+        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background: gold; border-radius: 50%; z-index: 1;"></div>
+        <div style="padding: 0 20px; text-align: right; max-width: 300px; margin-right: calc(50% + 30px); float: right;">📈 Q4 2025: LAUNCH ON DEX</div>
+      </li>
+      <li style="position: relative; clear: both;">
+        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background: gold; border-radius: 50%; z-index: 1;"></div>
+        <div style="padding: 0 20px; text-align: left; max-width: 300px; margin-left: calc(50% + 30px);">🤖 Q4 2025: AI TRADING INTEGRATION</div>
+      </li>
+    </ul>
+  </div>
+</section>
+  <section class="section whitepaper">
+  <div class="section-title" style="font-size: 2.5rem; text-align: center; letter-spacing: 1px; margin-bottom: 3rem;">📄 WHITEPAPER</div>
+  <div style="display: flex; overflow-x: auto; gap: 1rem; padding: 1rem 0;">
+    <div style="min-width: 250px; max-width: 250px; height: 200px; background: rgba(128, 64, 128, 0.25); border: 1px solid gold; border-radius: 1rem; flex-shrink: 0; padding: 1rem; font-size: 0.75rem; line-height: 1.3; overflow-y: auto; word-wrap: break-word; white-space: normal;">
+      <p>IN THE SEA OF MEMECOINS, MANY FLOAT. SOME SINK. BUT A FEW – LIKE DEX AI – GRAB THE WHEEL, FIRE UP THE AI, AND AIM STRAIGHT FOR LAYER 1.</p>
+      <p>DEX AI WAS BORN WITH A MEME AT HEART, BUT WITH A BRAIN POWERED BY DECENTRALIZED NODES. YES, IT'S A MEMECOIN. BUT IT WANTS TO BECOME A BLOCKCHAIN. IT DREAMS OF SMART CONTRACTS, FAST TRANSACTIONS, TRUE DECENTRALIZATION.</p>
+      <p>IT’S THE ONLY MEMECOIN THAT WROTE ITS WHITEPAPER BEFORE BECOMING A CHAIN</p>
+    </div>
+    <div style="min-width: 250px; max-width: 250px; height: 200px; background: rgba(128, 64, 128, 0.25); border: 1px solid gold; border-radius: 1rem; flex-shrink: 0; padding: 1rem; font-size: 0.75rem; line-height: 1.3; overflow-y: auto; word-wrap: break-word; white-space: normal;">
+      <p>TO BRING IRONY, CRYPTO CULTURE, AND THE POWER OF COMMUNITIES INTO THE WORLD OF TRUE BLOCKCHAIN INNOVATION, BUILDING A NEW LAYER 1 INFRASTRUCTURE FROM THE GROUND UP.</p>
+      <p>FROM MEMECOIN TO MAINNET: TO BECOME THE FIRST ‘BORN-FOR-FUN’ COIN THAT BUILDS A BLOCKCHAIN FOR REAL.</p>
+    </div>
+    <div style="min-width: 250px; max-width: 250px; height: 200px; background: rgba(128, 64, 128, 0.25); border: 1px solid gold; border-radius: 1rem; flex-shrink: 0; padding: 1rem; font-size: 0.75rem; line-height: 1.3; overflow-y: auto; word-wrap: break-word; white-space: normal;">
+      <p>NAME: DEX AI</p>
+      <p>SYMBOL: $DEXAI</p>
+      <p>NETWORK: BINANCE SMART CHAIN</p>
+      <p>TOTAL SUPPLY: 60,000,000,000 $DEXAI</p>
+    </div>
+    <div style="min-width: 250px; max-width: 250px; height: 200px; background: rgba(128, 64, 128, 0.25); border: 1px solid gold; border-radius: 1rem; flex-shrink: 0; padding: 1rem; font-size: 0.75rem; line-height: 1.3; overflow-y: auto; word-wrap: break-word; white-space: normal;">
+      <p>THE PRESALE INCLUDES 11 STAGES. EACH STAGE HAS A FUNDRAISING TARGET AND AN INCREASING PRICE.</p>
+      <p>STAGE 1: $5K – PRICE: $0.000100</p>
+      <p>STAGE 11: $400K (HARD CAP) – PRICE: $0.001350</p>
+    </div>
+    <div style="min-width: 250px; max-width: 250px; height: 200px; background: rgba(128, 64, 128, 0.25); border: 1px solid gold; border-radius: 1rem; flex-shrink: 0; padding: 1rem; font-size: 0.75rem; line-height: 1.3; overflow-y: auto; word-wrap: break-word; white-space: normal;">
+      <p>THIS WHITEPAPER IS IRONIC, BUT EVERYTHING IN IT IS TRUE.</p>
+      <p>WE’RE NOT PROMISING EASY PROFITS – ONLY TRANSPARENCY, AMBITION, AND A TON OF MEMES.</p>
+      <p>SEMI-ANONYMOUS BUT REAL TEAM. WITH EXPERIENCE IN SMART CONTRACTS, CRYPTO DESIGN, AND ADVANCED SHITPOSTING.</p>
+      <p>TEAM TOKENS: 2 BILLION WITH VESTING – 40% AT LAUNCH, 20% MONTHLY.</p>
+    </div>
+    <div style="min-width: 250px; max-width: 250px; height: 200px; background: rgba(128, 64, 128, 0.25); border: 1px solid gold; border-radius: 1rem; flex-shrink: 0; padding: 1rem; font-size: 0.75rem; line-height: 1.3; overflow-y: auto; word-wrap: break-word; white-space: normal;">
+      <p>BUYING $DEXAI IS NOT AN INVESTMENT. THE TEAM DOES NOT GUARANTEE COMPLETION OF THE ROADMAP OR DEVELOPMENT MILESTONES.</p>
+      <p>FUNDS RAISED MAY BE USED AT THE TEAM’S DISCRETION. THE TOKEN’S VALUE CAN DROP TO ZERO.</p>
+      <p>IN SHORT: THIS IS NOT FINANCIAL ADVICE. IT’S A MEMECOIN. MEMECOINS ARE FUN, BUT ALSO RISKY. WE PLAY IT STRAIGHT.</p>
+    </div>
+  </div>
+</section>
+<section class="section faq">
+    <h2>❓ FAQ</h2>
+    <div class="faq-item" onclick="toggleFAQ(this)">
+      <h3>What is DEX AI?</h3>
+      <div class="faq-answer">DEX AI is a memecoin with the ambition to become a Layer 1 blockchain powered by decentralized AI.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFAQ(this)">
+  <h3>How to purchase the tokens?</h3>
+  <div class="faq-answer" style="display: none;">
+    <p>Make sure you are connected to the Binance Smart Chain (BNB Mainnet). Then:</p>
+    <ol style="text-align: left; padding-left: 1rem;">
+      <li>Connect your wallet by clicking on "Connect Wallet".</li>
+      <li>Enter the amount of BNB you want to invest in the input field.</li>
+      <li>Click "Buy Token" to complete the purchase.</li>
+    </ol>
+  </div>
+</div>
+    <div class="faq-item" onclick="toggleFAQ(this)">
+      <h3>When will the tokens be distributed?</h3>
+      <div class="faq-answer">Tokens will be distributed after the end of the presale.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFAQ(this)">
+      <h3>What network is used?</h3>
+      <div class="faq-answer">DEX AI runs on the Binance Smart Chain (BSC).</div>
+    </div>
+    <div class="faq-item" onclick="toggleFAQ(this)">
+      <h3>How many presale stages are there?</h3>
+      <div class="faq-answer">There are 11 stages in the presale, with the token price increasing at each stage.</div>
+    </div>
+  </section>
+<script>
+    function toggleFAQ(item) {
+      const answer = item.querySelector('.faq-answer');
+      answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+
+<div class="footer" style="background-color: black;">
+   <a href="https://x.com/Dexai_AI" target="_blank" style="color: gold; text-decoration: none; font-weight: bold;">
+    <span style="font-size: 2rem; font-weight: bold;">𝕏</span>
+  </a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+<script>
+  const presaleAddress = "0x37971237e44f8347D54Ad3E4BcabC0734f78b0b7";
+  const tokenAddress = "0xC9ADea85AB9ec5540347A18A51Afe07D018bC09E";
+  const abi = [
+    {
+      "inputs": [],
+      "name": "buyTokens",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getFundsRaised",
+      "outputs": [
+        { "internalType": "uint256", "name": "", "type": "uint256" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "currentStage",
+      "outputs": [
+        { "internalType": "uint256", "name": "", "type": "uint256" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "", "type": "uint256" }
+      ],
+      "name": "stagePricesInUSD",
+      "outputs": [
+        { "internalType": "uint256", "name": "", "type": "uint256" }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ];
+
+  let provider, signer, contract, isConnected = false, lastStage = null;
+
+  async function init() {
+    console.log("init chiamato");
+    alert("Sto cercando di connettere il wallet...");
+    if (typeof window.ethereum === 'undefined') {
+      alert("Please install Metamask to participate in the presale.");
+      return;
+    }
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+    try {
+      await provider.send("eth_requestAccounts", []);
+    } catch (err) {
+      alert("Wallet connection denied. Please connect your wallet to buy tokens.");
+      return;
+    }
+    const chainId = await provider.send("eth_chainId", []);
+    if (chainId !== "0x38") {
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0x38" }]
+        });
+      } catch (switchError) {
+        // This error code indicates that the chain has not been added to MetaMask
+        if (switchError.code === 4902) {
+          try {
+            await window.ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [{
+                chainId: "0x38",
+                chainName: "Binance Smart Chain Mainnet",
+                nativeCurrency: {
+                  name: "Binance Coin",
+                  symbol: "BNB",
+                  decimals: 18
+                },
+                rpcUrls: ["https://bsc-dataseed.binance.org/"],
+                blockExplorerUrls: ["https://bscscan.com"]
+              }]
+            });
+          } catch (addError) {
+            alert("Failed to add BSC network to MetaMask.");
+            return;
+          }
+        } else {
+          alert("Please switch to Binance Smart Chain (BSC) in MetaMask.");
+          return;
+        }
+      }
+    }
+    signer = await provider.getSigner();
+    contract = new ethers.Contract(presaleAddress, abi, signer);
+    isConnected = true;
+    const connectBtn = document.getElementById("connect-button");
+    if (connectBtn) {
+      const address = await signer.getAddress();
+      connectBtn.innerText = `✅ ${address.slice(0, 6)}...${address.slice(-4)}`;
+      document.getElementById("wallet-status").innerText = `Wallet connected: ${address}`;
+    }
+    updateInfo();
+  }
+
+  async function updateInfo() {
+    const price = await contract.stagePricesInUSD(await contract.currentStage());
+    const funds = await contract.getFundsRaised();
+    const stage = await contract.currentStage();
+
+    document.getElementById("price").innerText = `TOKEN PRICE: $${(+ethers.utils.formatUnits(price, 18)).toFixed(6)}`;
+    document.getElementById("stage").innerText = `CURRENT STAGE: ${stage.toString()} / 11`;
+    const bnbPrice = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd')
+      .then(res => res.json())
+      .then(data => data.binancecoin.usd);
+    const usdRaised = parseFloat(ethers.utils.formatEther(funds)) * bnbPrice; 
+    document.getElementById("funds").innerText = `FUNDS RAISED: $${usdRaised.toFixed(2)}`;
+    const percent = Math.min((usdRaised / 2000000) * 100, 100);
+    document.getElementById("funds-bar").style.width = `${percent}%`;
+  }
+
+  async function buyTokens() {
+    console.log("buyTokens chiamato");
+    if (!isConnected || !signer || !contract) {
+    alert("Wallet not connected. Please click CONNECT WALLET first.");
+    return;
+  }
+    const amount = document.getElementById("bnb-amount").value;
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      alert("Please enter a valid amount in BNB.");
+      return;
+    }
+    try {
+      const oldStage = await contract.currentStage();
+      const tx = await contract.buyTokens({ value: ethers.utils.parseEther(amount) });
+      await tx.wait();
+      alert("PURCHASE COMPLETE! TOKENS WILL BE SENT AFTER THE PRESALE ENDS.");
+      const newStage = await contract.currentStage();
+      if (!lastStage || !lastStage.eq(newStage)) {
+        updateInfo();
+        lastStage = newStage;
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Transaction failed: " + (e?.reason || e?.message || "Please try again."));
+    }
+  }
+
+ document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("buy-button").onclick = async () => {
+  if (!isConnected) {
+    await init();
+  }
+  await buyTokens();
+};
+});
+
+</script>
+</body>
+</html>
